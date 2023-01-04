@@ -1,0 +1,16 @@
+{% include 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load filter %}
+
+<div class="container">
+    <h3>Payment Here</h3>
+    <!-- Payment Integration -->
+    <div class="form-container">
+        <th class="" colspan="">Total Amount</th>
+        <button type="submit" class="btn btn-outline-success btn-block">Pay</button>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% include 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load filter %}
+
+<style>
+    .modal-container .modal-btn {
+        color: black;
+        background: whitesmoke;
+        width: 150px;
+        height: 52px;
+        font-size: 25px;
+        line-height: 50px;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 25px;
+        transition: backgronud 0.3s ease-in;
+    }
+
+    .modal-container .modal-btn:hover {
+        background: yellowgreen;
+    }
+</style>
+
+<div class="container ">
+    <div class="border rounded p-4 m-4">
+        <h1 class="display-4 ">Your Order</h1>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Date</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img style="height: 60px;" class="rounded-circle" src="{{order.product.image.url}}" alt=""></td>
+                    <td>{{order.product.name}}</td>
+                    <td>{{order.date}}</td>
+                    <td>{{order.price|currency}}</td>
+                    <td>{{order.quantity}}</td>
+                    <td>{{order.quantity|multiply:order.price|currency}}</td>
+                    {% if order.status %}
+                    <td style="color: green;">Completed</td>
+                    {%else%}
+                    <td style="color: red;">Pending</td>
+                    {% endif %}
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+            <div class="modal-container">
+                <a href="/pay">
+                    <label for="modal-toggle" class="modal-btn">Payment</label>
+                </a>
+            </div>
+    </div>
+</div>
+{% endblock %}

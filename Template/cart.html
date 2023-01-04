@@ -1,0 +1,146 @@
+{% include 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load filter %}
+
+<style>
+    .modal-container .modal-btn {
+        /* display: block; */
+        color: #fff;
+        background: blue;
+        width: 150px;
+        height: 50px;
+        font-size: 22px;
+        line-height: 50px;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 30px;
+        /* box-shadow: 0 5px 5px -5px #333; */
+        transition: backgronud 0.3s ease-in;
+    }
+
+    .modal-container .modal-btn:hover {
+        background: skyblue;
+    }
+
+    #modal-toggle {
+        display: none;
+    }
+
+    .modal-container .modal-content,
+    .modal-container .modal-content {
+        height: 0;
+        width: 0;
+        opacity: 0;
+        visibility: hidden;
+        cursor: pointer;
+        transition: opacity 0.2s ease-in;
+    }
+
+    .modal-container .modal-content h2 {
+        border-bottom: 2px solid #000;
+        padding-bottom: 5px;
+    }
+
+    .modal-content .modal-close {
+        color: #aaa;
+        background: #fff;
+        width: 25px;
+        height: 25px;
+        font-size: 25px;
+        text-align: center;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        cursor: pointer;
+    }
+
+    .modal-content .modal-close:hover {
+        color: #333;
+    }
+
+    .modal-container #modal-toggle:checked~.modal-content {
+        background: #fff;
+        width: 400px;
+        height: 300px;
+        padding: 10px 30px;
+        border-radius: 4px;
+        position: fixed;
+        top: 10%;
+        left: calc(50% - 200px);
+        cursor: auto;
+        visibility: visible;
+        opacity: 1;
+        z-index: 1000;
+    }
+</style>
+
+<div class="container ">
+    <div class="border rounded p-4 m-4">
+        <h1 class="display-4 ">Your Cart</h1>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img style="height: 60px;" class="rounded-circle" src="{{product.image.url}}" alt=""></td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.price|currency}}</td>
+                    <td>{{product|cart_quantity:request.session.cart}}</td>
+                    <td>{{product|price_total:request.session.cart|currency}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4"></th>
+                    <th class="" colspan="">Total</th>
+                    <th>{{products|total_cart_price:request.session.cart|currency}}</th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="modal-container">
+            <input type="checkbox" id="modal-toggle">
+            <label for="modal-toggle" class="modal-btn">Place Order</label>
+
+            <div class="modal-content">
+                <label for="modal-toggle" class="modal-close">&times;</label>
+                <h2>Check Out Form</h2>
+
+                <form action="/check-out" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="">Address</label>
+                        <input type="text" name="address" id="" class="form-control" placeholder=""
+                            aria-describedby="helpId">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Phone</label>
+                        <input type="text" name="phone" id="" class="form-control" placeholder=""
+                            aria-describedby="helpId">
+                    </div>
+                    <hr>
+                    <input type="submit" value="Check-Out" class="btn btn-outline-info col-lg-6">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+
+{% endblock %}
