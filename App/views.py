@@ -178,5 +178,4 @@ def signup(request):
         return HttpResponseRedirect("An Acception Occured! Customer has been Added")       
 
 def pay(request):
-    
     return render(request, 'pay.html',)
