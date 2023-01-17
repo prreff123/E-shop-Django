@@ -3,8 +3,6 @@ from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 from .middleware.auth import auth_middleware
-from django.views.static import serve
-from django.conf.urls import url
 
 urlpatterns = [
     path('',views.Index.as_view(),name="index"),
@@ -16,6 +14,4 @@ urlpatterns = [
     path('check-out',views.CheckOut.as_view(), name="checkout"),
     path('pay',views.pay,name="pay"),
     
-    url(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}), 
-    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
